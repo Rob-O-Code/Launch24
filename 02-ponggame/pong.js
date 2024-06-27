@@ -17,27 +17,38 @@ let scoreL = 0;
 let scoreR = 0;
 
 function resetGame() {
-    // CODE
+    clearInterval(intervalID);
     gameboard.width = boardWidth;
     gameboard.height = boardHeight;
-    
-    // CODE
+
+    scoreL = 0;
+    scoreR = 0;
+    updateScore();
+    resetPaddles();
+    resetBall();
+    nextTick();
 }
 
 function resetPaddles() {
-    // CODE
+    paddleL = new Paddle(0, 0, paddleLength, paddleWidth, "red");
+    paddleR = new Paddle(boardWidth-paddleWidth, 0, paddleLength, paddleWidth, "blue");
 }
 
 function resetBall() {
-    // CODE
+    ball = new Ball(boardWidth/2, boardHeight/2, -5, -5, ballRadius, "hotpink");
 }
 
 function clearBoard() {
-    // CODE
+    ctx.fillStyle = "grey";
+    ctx.fillRect(0, 0, boardWidth, boardHeight);
 }
 
 function draw() {
-    // CODE
+    clearBoard();
+    ball.draw(ctx);
+    paddleL.draw(ctx);
+    paddleR.draw(ctx);
+
 }
 
 let intervalID;
@@ -45,21 +56,31 @@ let intervalID;
 function nextTick() {
     intervalID = setTimeout(
         () => {
-            // CODE
+            paddleL.move();
             if (cpucheck.checked) {
-                // CODE
+                paddleR.moveCPU(ball);
+            } else {
+                paddleR.move();
             }
-
-            // CODE
+            ball.bounceWall();
+            if (ball.bouncePaddleL(paddleL)) score("right");
+            if (ball.bouncePaddleR(paddleR)) score("left");
+            ball.move();
+            draw();
+            nextTick();
         }, 10
     );
 }
 
 function score(player) {
-    // CODE
+    if (player == "left") scoreL++;
+    if (player == "right") scoreR++;
+
+    updateScore();
+    resetBall();
 }
 
 function updateScore() {
     const scoreboard = document.getElementById("scoreboard");
-    // CODE
+    scoreboard.innerHTML = `${scoreL} : ${scoreR}`;
 }

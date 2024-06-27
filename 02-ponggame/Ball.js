@@ -9,28 +9,53 @@ class Ball {
     }
 
     draw(ctx) {
-        // CODE
+        ctx.fillStyle = this.c;
+        ctx.strokeStyle = "black";
+        ctx.lineWidth = 2;
+
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.r, 0, 2*Math.PI);
+        ctx.stroke();
+        ctx.fill();
     }
 
     move() {
-        // CODE
+        this.x += this.vx;
+        this.y += this.vy;
     }
 
     bounceWall() {
         // TOP WALL
-        // CODE
+        if (this.y - this.r < 0) {
+            this.vy = Math.abs(this.vy);
+        }
 
         // BOTTOM WALL
-        // CODE
+        if (this.y + this.r > boardHeight) {
+            this.vy = -1 * Math.abs(this.vy);
+        }
     }
 
     bouncePaddleL(paddle) {
-        // CODE
+        if (this.x - this.r > paddle.w + paddle.x) return false;
+        if (this.x - this.r < paddle.x) return true; // Stop the game
+        if (this.y < paddle.y) return false;
+        if (this.y > paddle.y + paddle.l) return false;
+        if (this.vx < 0) {
+            this.vx = paddleForce * Math.abs(this.vx);
+            // Change y-velocity??
+        }
         return false;
     }
 
     bouncePaddleR(paddle) {
-        // CODE
+        if (this.x + this.r < paddle.x) return false;
+        if (this.x + this.r > paddle.x + paddle.w) return true; // Stop the game
+        if (this.y < paddle.y) return false;
+        if (this.y > paddle.y + paddle.l) return false;
+        if (this.vx > 0) {
+            this.vx = -paddleForce * Math.abs(this.vx);
+        }
         return false;
     }
 }
