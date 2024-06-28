@@ -1,4 +1,4 @@
-const APIKEY = "APIKEYHERE";
+const APIKEY = "015a49e1ee86b6c2d96c402a9c4dcfa7";
 let units = "imperial";
 let units_temp = `&deg;F`;
 let units_humid = `%`;
